@@ -9,7 +9,8 @@ int main() {
     int opcao = 0;
     do {
         printf("MENU\n"
-               "1 - Clientes\n"787
+               "1 - Clientes\n"
+        787
         "2 - Agendamento\n"
         "3 - Fila de Atendimento\n"
         "4 - Histórico de Atendimento\n"
@@ -32,9 +33,9 @@ int main() {
             default:
                 printf("Opção Inválida!\n");
                 break;
-                while (opcao != 6);
-
         }
-        return 0;
+    } while (opcao != 6);
+
+    return 0;
     }
 
