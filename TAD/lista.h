@@ -5,12 +5,6 @@
 #ifndef TRABALHO_ESTRUTURA_DADOS_LISTA_H
 #define TRABALHO_ESTRUTURA_DADOS_LISTA_H
 
-#define TAM_CPF 12
-#define TAM_DATA 11
-#define TAM_HORA 6
-#define TAM_SERVICO 50
-#define TAM_STATUS 15
-
 typedef struct Agendamento {
     char cpf[12];
     char data[11];       // DD/MM/AAAA
