@@ -19,10 +19,19 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
     strcpy(novo->hora, hora);
     strcpy(novo->tipoServico, tipoServico);
     strcpy(novo->status, "Agendado");
-    novo->prox = lista;
+    novo->prox = NULL;
 
-    return novo; // novo início da lista
+    if (lista == NULL) {
+        return novo;  // Lista estava vazia, novo é o primeiro elemento
+    } else {
+        Agendamento *temp = lista;
+        while (temp->prox != NULL)
+            temp = temp->prox;
+        temp->prox = novo;
+        return lista;  // Retorna o início original da lista
+    }
 }
+
 
 void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
     int encontrou = 0;
