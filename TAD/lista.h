@@ -14,9 +14,10 @@ typedef struct Agendamento {
     struct Agendamento *prox;
 } Agendamento;
 
-// Funções do TAD
+
+int verificarConflito(Agendamento *lista, const char *data, const char *hora);
 Agendamento* criarLista();
-Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico);
+Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico, const char *status);
 void visualizarAgendamentos(Agendamento *lista, const char *cpf);
 Agendamento* cancelarAgendamento(Agendamento *lista, const char *cpf, const char *data, const char *hora);
 Agendamento* atualizarStatus(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *novoStatus);

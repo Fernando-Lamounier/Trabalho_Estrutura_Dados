@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "TAD/lista.h"
 #include "ParseXML/parse.h"
+#include "Modulos/agendamento.h"
 
 int main() {
 
@@ -31,7 +32,7 @@ int main() {
                 break;
 
             case 2:
-
+                menuAgendamento(agendamento);
                 break;
 
             case 3:

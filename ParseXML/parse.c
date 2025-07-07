@@ -24,12 +24,12 @@
     }
 }*/
 
-void parseAgendamentos(xmlNode *node, Agendamento **agendamentos, int *count) {
-    Agendamento *aux = NULL;
+void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
+    int count = 0;
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "agendamento") == 0) {
 
-            // Cria novo nó dinamicamente
+            //Aloca memória temporária
             Agendamento *novo = malloc(sizeof(Agendamento));
             if (!novo) {
                 fprintf(stderr, "Erro de alocação\n");
@@ -55,18 +55,11 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos, int *count) {
                 }
             }
 
+            *agendamentos = agendar(*agendamentos, novo->cpf, novo->data, novo->hora, novo->tipoServico, novo->status);
 
-            // Insere o nó no final da lista
-            if (*agendamentos == NULL) {
-                *agendamentos = novo;  // Se lista está vazia, novo é o primeiro
-            } else {
-                Agendamento *temp = *agendamentos;
-                while (temp->prox != NULL)
-                    temp = temp->prox;
-                temp->prox = novo;  // Insere no final
-            }
+            free(novo);
 
-            (*count)++;
+            count++;
         }
     }
 }
@@ -150,28 +143,13 @@ void parseXML(const char *filename, Agendamento **agendamento) {
 
     xmlNode *root = xmlDocGetRootElement(doc);
 
-    //Cliente clientes[200];
-    int qtd_clientes = 0;
-
-    //Agendamento agendamentos[200];
-    int qtd_agendamentos = 0;
-
-    //ClienteFila fila[200];
-    int qtd_fila = 0;
-
-    //Atendimento historico[200];
-    int qtd_historico = 0;
-
-    //Servico servicos[200];
-    int qtd_servicos = 0;
 
     for (xmlNode *cur = root->children; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE) {
             if (strcmp((char *) cur->name, "clientes") == 0) {
                 //parseClientes(cur->children, clientes, &qtd_clientes);
             } else if (strcmp((char *) cur->name, "agendamentos") == 0) {
-               printf("cheguei aqui");
-                parseAgendamentos(cur->children, agendamento, &qtd_agendamentos);
+                parseAgendamentos(cur->children, agendamento);
             } else if (strcmp((char *) cur->name, "fila_atendimento") == 0) {
                 //parseFilaAtendimento(cur->children, fila, &qtd_fila);
             } else if (strcmp((char *) cur->name, "historico_atendimentos") == 0) {
@@ -181,6 +159,8 @@ void parseXML(const char *filename, Agendamento **agendamento) {
             }
         }
     }
+
+
     xmlFreeDoc(doc);
     xmlCleanupParser();
 }

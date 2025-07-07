@@ -7,7 +7,20 @@ Agendamento* criarLista() {
     return NULL;
 }
 
-Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico) {
+int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
+    while (lista != NULL) {
+        if (strcmp(lista->data, data) == 0 && strcmp(lista->hora, hora) == 0) {
+            return 1;  // Conflito encontrado
+        }
+        lista = lista->prox;
+    }
+    return 0;  // Nenhum conflito
+}
+
+Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico,
+                     const char *status) {
+
+    // Cria novo agendamento
     Agendamento *novo = (Agendamento *) malloc(sizeof(Agendamento));
     if (!novo) {
         printf("Erro ao alocar memória.\n");
@@ -18,19 +31,21 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
     strcpy(novo->data, data);
     strcpy(novo->hora, hora);
     strcpy(novo->tipoServico, tipoServico);
-    strcpy(novo->status, "Agendado");
+    strcpy(novo->status, status);
     novo->prox = NULL;
 
+    // Insere no final da lista
     if (lista == NULL) {
-        return novo;  // Lista estava vazia, novo é o primeiro elemento
+        return novo;  // Lista estava vazia
     } else {
         Agendamento *temp = lista;
         while (temp->prox != NULL)
             temp = temp->prox;
         temp->prox = novo;
-        return lista;  // Retorna o início original da lista
+        return lista;
     }
 }
+
 
 
 void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
