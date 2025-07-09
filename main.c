@@ -9,8 +9,7 @@ int main() {
     int opcao = 0;
     do {
         printf("MENU\n"
-               "1 - Clientes\n"
-        787
+        "1 - Clientes\n"
         "2 - Agendamento\n"
         "3 - Fila de Atendimento\n"
         "4 - Histórico de Atendimento\n"
