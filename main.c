@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "TAD/TAD_Clientes/lista_Clientes.h"
+#include "Modulos/Modulo_Clientes/cliente.h"
+#include <string.h>
 
 
 int main() {
+    TabelaCliente* tabela = criarTabelaCliente(1427);
     printf("------------TRABALHO Estrutura de Dados I------------\n"
            "Tema: Oficina\n\n");
 
@@ -20,6 +24,7 @@ int main() {
 
         switch (opcao) {
             case 1:
+                menuClientes(tabela);
                 break;
             case 2:
                 break;
@@ -28,6 +33,8 @@ int main() {
             case 4:
                 break;
             case 5:
+                break;
+            case 6:
                 break;
             default:
                 printf("Opção Inválida!\n");
