@@ -50,7 +50,6 @@ int main() {
             case 6:
                 printf("Saindo!\n");
                 break;
-
             default:
                 printf("Opção Inválida!\n");
                 break;
