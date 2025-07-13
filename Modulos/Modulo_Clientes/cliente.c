@@ -1,3 +1,4 @@
+
 #include "cliente.h"
 #include "../TAD/TAD_Tabela/lista_Clientes.h"
 #include <stdio.h>
