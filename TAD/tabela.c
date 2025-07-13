@@ -1,4 +1,4 @@
-#include "lista_Clientes.h"
+#include "tabela.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -81,7 +81,6 @@ int duplaInsercaoCliente (int posicao1, long int chave, int i, int tamanhoTabela
     int posicao2 = chaveDivisao(chave, tamanhoTabela - 1) + 1;
     return ((posicao1 + i*posicao2) & 0x7FFFFFFF) % tamanhoTabela;
 }
-
 
 int buscaCliente(TabelaCliente *tabela, const char *cpf_cnpj, Cliente *cliente, int tipo) {
 

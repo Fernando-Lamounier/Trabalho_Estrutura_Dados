@@ -1,10 +1,10 @@
 
 
-#ifndef LISTA_CLIENTES_H
-#define LISTA_CLIENTES_H
+#ifndef TRABALHO_ESTRUTURA_DADOS_TABELA_H
+#define TRABALHO_ESTRUTURA_DADOS_TABELA_H
 
 typedef struct Cliente {
-    char cpf_cnpj[15];
+    char cpf_cnpj[12];
     char nome[255];
     char telefone[12];
     char endereco[255];
@@ -21,7 +21,6 @@ struct Tabela {
 
 // Funções do TAD
 
-
 int chaveDivisao (long int chave, int tamanhoTabela);
 int chaveMultiplicacao (long int chave, int tamanhoTabela);
 int insereCliente (TabelaCliente *tabela, Cliente *cliente);
@@ -36,4 +35,4 @@ TabelaCliente* criarTabelaCliente(int tamanhoTabela);
 void liberarTabelaCliente(TabelaCliente *tabela);
 void listarCliente(TabelaCliente *tabela, const char *cpf_cnpj);
 
-#endif //LISTA_CLIENTES_H
+#endif

@@ -8,8 +8,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../TAD/AVLtree.h"
 #include "../TAD/lista.h"
+#include "../TAD/tabela.h"
 
-void menuAgendamento (Agendamento *agendamentos);
+
+void menuAgendamento (Agendamento *agendamentos, NoAVL *raiz);
 
 #endif //TRABALHO_ESTRUTURA_DADOS_MENU_H

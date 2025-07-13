@@ -3,13 +3,19 @@
 #include "TAD/lista.h"
 #include "ParseXML/parse.h"
 #include "Modulos/agendamento.h"
+#include "Modulos/cliente.h"
+#include "Modulos/servico.h"
+#include "TAD/tabela.h"
+#include "TAD/AVLtree.h"
 
 int main() {
 
+    TabelaCliente *cliente = criarTabelaCliente(1024);
     Agendamento *agendamento = criarLista(); // lista encadeada inicialmente vazia
+    NoAVL *raiz = criarArvore();
 
-    // Chama o parser passando o endereço do ponteiro para popular a lista
-    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", &agendamento);
+    // Le um arquivo XML
+    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", &agendamento, &raiz);
 
     printf("------------TRABALHO Estrutura de Dados I------------\n"
            "Tema: Oficina\n\n");
@@ -28,11 +34,11 @@ int main() {
 
         switch (opcao) {
             case 1:
-                // Exemplo: implementar função para mostrar clientes
+                menuClientes(cliente);
                 break;
 
             case 2:
-                menuAgendamento(agendamento);
+                menuAgendamento(agendamento, raiz);
                 break;
 
             case 3:
@@ -44,11 +50,14 @@ int main() {
                 break;
 
             case 5:
-                // Implementar relatório
+                menuServico(raiz);
                 break;
 
             case 6:
                 printf("Saindo!\n");
+                liberarLista(agendamento);
+                liberarTabelaCliente(cliente);
+                liberarArvore(raiz);
                 break;
             default:
                 printf("Opção Inválida!\n");

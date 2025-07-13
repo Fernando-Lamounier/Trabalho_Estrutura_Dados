@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "lista.h"
-
-Agendamento* criarLista() {
-    return NULL;
-}
 
 int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
     while (lista != NULL) {
@@ -15,6 +8,10 @@ int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
         lista = lista->prox;
     }
     return 0;  // Nenhum conflito
+}
+
+Agendamento* criarLista() {
+    return NULL;
 }
 
 Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico,
@@ -45,8 +42,6 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
         return lista;
     }
 }
-
-
 
 void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
     int encontrou = 0;

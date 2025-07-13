@@ -1,0 +1,8 @@
+#ifndef TRABALHO_ESTRUTURA_DADOS_SERVICO_H
+#define TRABALHO_ESTRUTURA_DADOS_SERVICO_H
+
+#include "../TAD/AVLtree.h"
+
+void menuServico (NoAVL *raiz);
+
+#endif //TRABALHO_ESTRUTURA_DADOS_SERVICO_H

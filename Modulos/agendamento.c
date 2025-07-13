@@ -48,7 +48,7 @@ void buscaCPF (Agendamento *agendamentos) {
 }
 
 // Pega todos os dados para agendar um serviço
-void pegarDados (Agendamento **agendamentos, const int opcao) {
+void pegarDados (Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
     Agendamento *novo = malloc(sizeof(Agendamento));
     if (!novo) {
         fprintf(stderr, "Erro de alocação\n");
@@ -103,6 +103,11 @@ void pegarDados (Agendamento **agendamentos, const int opcao) {
     fgets(novo->tipoServico, sizeof(novo->tipoServico), stdin);
     novo->tipoServico[strcspn(novo->tipoServico, "\n")] = '\0';
 
+    if (buscarServico(raiz, novo->tipoServico, 0) == NULL) {
+        free(novo);
+        return;
+    }
+
     strcpy(novo->status, "Agendado");
 
     int verif = verificarConflito(*agendamentos, novo->data, novo->hora);
@@ -117,7 +122,7 @@ void pegarDados (Agendamento **agendamentos, const int opcao) {
 }
 
 // Menu da seção de Agendamentos (Lista)
-void menuAgendamento (Agendamento *agendamentos) {
+void menuAgendamento (Agendamento *agendamentos, NoAVL *raiz) {
     int opcao;
     do {
         printf("\n----------MENU DE AGENDAMENTOS----------\n"
@@ -133,14 +138,14 @@ void menuAgendamento (Agendamento *agendamentos) {
 
         switch (opcao) {
             case 1:
-                pegarDados(&agendamentos, opcao);
+                pegarDados(&agendamentos, raiz, opcao);
                 break;
             case 2:
                 buscaCPF(agendamentos);
                 break;
             case 3:
             case 4:
-                pegarDados(&agendamentos, opcao);
+                pegarDados(&agendamentos, raiz, opcao);
                 break;
             case 5:
                 printf("Voltando...\n\n");

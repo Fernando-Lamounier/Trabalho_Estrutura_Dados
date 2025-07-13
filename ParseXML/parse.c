@@ -25,7 +25,6 @@
 }*/
 
 void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
-    int count = 0;
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "agendamento") == 0) {
 
@@ -59,7 +58,6 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
 
             free(novo);
 
-            count++;
         }
     }
 }
@@ -111,30 +109,41 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
             historico[(*count)++] = at;
         }
     }
-}
+} */
 
-void parseServicos(xmlNode *node, Servico servicos[], int *count) {
+void parseServicos(xmlNode *node, NoAVL **raiz) {
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "servico") == 0) {
-            Servico s = {0};
+
+            //Aloca memória temporária
+            Servico *novo = malloc(sizeof(Servico));
+            if (!novo) {
+                fprintf(stderr, "Erro de alocação\n");
+                return;
+            }
+
             for (xmlNode *child = cur->children; child; child = child->next) {
                 if (child->type == XML_ELEMENT_NODE) {
                     char *content = (char *)xmlNodeGetContent(child);
                     if (strcmp((char *)child->name, "nome") == 0)
-                        strncpy(s.nome, content, sizeof(s.nome)-1);
+                        strncpy(novo->nome, content, sizeof(novo->nome)-1);
                     else if (strcmp((char *)child->name, "descricao") == 0)
-                        strncpy(s.descricao, content, sizeof(s.descricao)-1);
+                        strncpy(novo->descricao, content, sizeof(novo->descricao)-1);
                     else if (strcmp((char *)child->name, "preco_medio") == 0)
-                        s.preco_medio = atof(content);
+                        novo->precoMedio = atof(content);
                     xmlFree(content);
                 }
             }
-            servicos[(*count)++] = s;
+
+            inserirServico(raiz, *novo);
+
+            free(novo);
+
         }
     }
-}*/
+}
 
-void parseXML(const char *filename, Agendamento **agendamento) {
+void parseXML(const char *filename, Agendamento **agendamento, NoAVL **raiz) {
     xmlDoc *doc = xmlReadFile(filename, NULL, 0);
     if (!doc) {
         printf("Erro ao abrir o arquivo %s\n", filename);
@@ -155,7 +164,7 @@ void parseXML(const char *filename, Agendamento **agendamento) {
             } else if (strcmp((char *) cur->name, "historico_atendimentos") == 0) {
                 //parseHistoricoAtendimentos(cur->children, historico, &qtd_historico);
             } else if (strcmp((char *) cur->name, "servicos") == 0) {
-                //parseServicos(cur->children, servicos, &qtd_servicos);
+                parseServicos(cur->children, raiz);
             }
         }
     }
