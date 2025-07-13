@@ -7,7 +7,20 @@ Agendamento* criarLista() {
     return NULL;
 }
 
-Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico) {
+int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
+    while (lista != NULL) {
+        if (strcmp(lista->data, data) == 0 && strcmp(lista->hora, hora) == 0 && strcmp(lista->status, "Agendado") == 0) {
+            return 1;  // Conflito encontrado
+        }
+        lista = lista->prox;
+    }
+    return 0;  // Nenhum conflito
+}
+
+Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *tipoServico,
+                     const char *status) {
+
+    // Cria novo agendamento
     Agendamento *novo = (Agendamento *) malloc(sizeof(Agendamento));
     if (!novo) {
         printf("Erro ao alocar memória.\n");
@@ -18,14 +31,27 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
     strcpy(novo->data, data);
     strcpy(novo->hora, hora);
     strcpy(novo->tipoServico, tipoServico);
-    strcpy(novo->status, "Agendado");
-    novo->prox = lista;
+    strcpy(novo->status, status);
+    novo->prox = NULL;
 
-    return novo; // novo início da lista
+    // Insere no final da lista
+    if (lista == NULL) {
+        return novo;  // Lista estava vazia
+    } else {
+        Agendamento *temp = lista;
+        while (temp->prox != NULL)
+            temp = temp->prox;
+        temp->prox = novo;
+        return lista;
+    }
 }
+
+
 
 void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
     int encontrou = 0;
+
+    printf("Resultado da busca:\n");
     while (lista != NULL) {
         if (strcmp(lista->cpf, cpf) == 0) {
             printf("CPF: %s | Data: %s | Hora: %s | Serviço: %s | Status: %s\n",
@@ -40,35 +66,19 @@ void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
     }
 }
 
-Agendamento* cancelarAgendamento(Agendamento *lista, const char *cpf, const char *data, const char *hora) {
+Agendamento* atualizarStatus(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *novoStatus) {
     Agendamento *atual = lista;
 
     while (atual != NULL) {
-        if (strcmp(atual->cpf, cpf) == 0 && strcmp(atual->data, data) == 0 && strcmp(atual->hora, hora) == 0) {
-            strcpy(atual->status, "Cancelado");
-            printf("Agendamento cancelado com sucesso.\n");
+        if (strcmp(atual->cpf, cpf) == 0 && strcmp(atual->data, data) == 0 && strcmp(atual->hora, hora) == 0 && strcmp(atual->status, "Agendado") == 0) {
+            strcpy(atual->status, novoStatus);
+            printf("Serviço %s com sucesso.\n", novoStatus);
             return lista;
         }
         atual = atual->prox;
     }
 
     printf("Agendamento não encontrado.\n");
-    return lista;
-}
-
-Agendamento* atualizarStatus(Agendamento *lista, const char *cpf, const char *data, const char *hora, const char *novoStatus) {
-    Agendamento *atual = lista;
-
-    while (atual != NULL) {
-        if (strcmp(atual->cpf, cpf) == 0 && strcmp(atual->data, data) == 0 && strcmp(atual->hora, hora) == 0) {
-            strcpy(atual->status, novoStatus);
-            printf("Status atualizado com sucesso.\n");
-            return lista;
-        }
-        atual = atual->prox;
-    }
-
-    printf("Agendamento não encontrado para atualizar status.\n");
     return lista;
 }
 
