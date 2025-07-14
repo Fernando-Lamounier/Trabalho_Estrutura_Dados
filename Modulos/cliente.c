@@ -1,11 +1,10 @@
-
 #include "cliente.h"
+#include "tabela.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-
-void menuClientes(TabelaCliente *tabela) {
+void menuClientes(struct Tabela *tabela) {
     int opcao;
     do {
         printf("\n----------MENU DE CLIENTES----------\n"
@@ -13,7 +12,8 @@ void menuClientes(TabelaCliente *tabela) {
                "2 - Vizualizar clientes\n"
                "3 - Apagar cliente\n"
                "4 - Atualizar cliente\n"
-               "5 - Voltar\n"
+               "5 - Vizualizar Histórico de Atendimentos\n"
+               "6 - Voltar\n"
                "Escolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -41,18 +41,17 @@ void menuClientes(TabelaCliente *tabela) {
                                         printf("Cliente: %s\n"
                                                "CPF: %s\n"
                                                "Endereco: %s\n"
-                                               "Telefone: %s\n\n", tabela->clientes[i]->nome, tabela->clientes[i]->cpf_cnpj,
+                                               "Telefone: %s\n\n", tabela->clientes[i]->nome, tabela->clientes[i]->cpf,
                                                tabela->clientes[i]->endereco, tabela->clientes[i]->telefone);
-
                                     }
                                 }
                                 break;
                             case 2:
-                                char cpj_cnpj[15];
+                                char cpf[15];
                                 printf("Digite o cpf do cliente: ");
                                 setbuf(stdin, NULL);
-                                scanf("%s", cpj_cnpj);
-                                listarCliente(tabela, cpj_cnpj);
+                                scanf("%s", cpf);
+                                listarCliente(tabela, cpf);
                                 break;
                             default:
                                 break;
@@ -68,6 +67,9 @@ void menuClientes(TabelaCliente *tabela) {
                 alterarCliente(tabela);
                 break;
             case 5:
+                visualizarHistorico(tabela);
+                break;
+            case 6:
                 printf("Voltando...\n\n");
                 break;
             default:
@@ -75,11 +77,11 @@ void menuClientes(TabelaCliente *tabela) {
                 break;
         }
 
-    } while (opcao != 5);
+    } while (opcao != 6);
 }
 
 
-void pegarDadosCliente (TabelaCliente *tabela) {
+void pegarDadosCliente (struct Tabela *tabela) {
     //Aloca memória temporária
     Cliente *novo = malloc(sizeof(Cliente));
     if (!novo) {
@@ -90,7 +92,7 @@ void pegarDadosCliente (TabelaCliente *tabela) {
 
     printf("Digite o CPF do Cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", novo->cpf_cnpj);
+    scanf(" %[^\n]", novo->cpf);
 
     printf("Digite o nome do cliente: ");
     setbuf(stdin, NULL);
@@ -115,20 +117,20 @@ void pegarDadosCliente (TabelaCliente *tabela) {
 
 void deletarCliente(TabelaCliente *tabela) {
 
-    char cpf_cnpj[15];
+    char cpf[12];
     printf("Digite o CPF do Cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cpf_cnpj);
+    scanf(" %[^\n]", cpf);
 
-    removerCliente(tabela, cpf_cnpj);
+    removerCliente(tabela, cpf);
 
 }
 
 void alterarCliente(TabelaCliente *tabela) {
-    char cpf_cnpj[15];
+    char cpf[12];
     printf("Digite o CPF do Cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cpf_cnpj);
+    scanf(" %[^\n]", cpf);
 
-    atualizarCliente(tabela, cpf_cnpj);
+    atualizarCliente(tabela, cpf, NULL, 0);
 }

@@ -1,4 +1,7 @@
 #include "lista.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
     while (lista != NULL) {

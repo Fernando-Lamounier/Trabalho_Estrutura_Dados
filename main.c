@@ -1,21 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "TAD/lista.h"
 #include "ParseXML/parse.h"
-#include "Modulos/agendamento.h"
-#include "Modulos/cliente.h"
-#include "Modulos/servico.h"
-#include "TAD/tabela.h"
-#include "TAD/AVLtree.h"
+#include "tabela.h"
+#include "AVLtree.h"
+#include "agendamento.h"
+#include "servico.h"
 
 int main() {
 
-    TabelaCliente *cliente = criarTabelaCliente(1024);
-    Agendamento *agendamento = criarLista(); // lista encadeada inicialmente vazia
+    TabelaCliente *clientes = criarTabelaCliente(1024);
+    Agendamento *agendamentos = criarLista();
     NoAVL *raiz = criarArvore();
 
     // Le um arquivo XML
-    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", &agendamento, &raiz);
+    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", clientes, &agendamentos, &raiz);
 
     printf("------------TRABALHO Estrutura de Dados I------------\n"
            "Tema: Oficina\n\n");
@@ -26,19 +24,18 @@ int main() {
                "1 - Clientes\n"
                "2 - Agendamento\n"
                "3 - Fila de Atendimento\n"
-               "4 - Histórico de Atendimento\n"
-               "5 - Relatório de Serviços\n"
-               "6 - Sair\n"
+               "4 - Relatório de Serviços\n"
+               "5 - Sair\n"
                "Escolha uma opção: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                menuClientes(cliente);
+                menuClientes(clientes);
                 break;
 
             case 2:
-                menuAgendamento(agendamento, raiz);
+                menuAgendamento(clientes ,agendamentos, raiz);
                 break;
 
             case 3:
@@ -46,24 +43,20 @@ int main() {
                 break;
 
             case 4:
-                // Implementar histórico
-                break;
-
-            case 5:
                 menuServico(raiz);
                 break;
 
-            case 6:
+            case 5:
                 printf("Saindo!\n");
-                liberarLista(agendamento);
-                liberarTabelaCliente(cliente);
+                liberarLista(agendamentos);
+                liberarTabelaCliente(clientes);
                 liberarArvore(raiz);
                 break;
             default:
                 printf("Opção Inválida!\n");
                 break;
         }
-    } while (opcao != 6);
+    } while (opcao != 5);
 
     // liberar memória das listas aqui, se necessário
 

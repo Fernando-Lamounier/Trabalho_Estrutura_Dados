@@ -1,4 +1,7 @@
 #include "servico.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 void pegarDadosServico (NoAVL **raiz) {
     Servico *novo = malloc(sizeof(Servico));

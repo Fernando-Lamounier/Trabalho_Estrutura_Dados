@@ -1,4 +1,7 @@
 #include "AVLtree.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 NoAVL* criarArvore() {
     return NULL;
