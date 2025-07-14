@@ -73,6 +73,11 @@ int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
             tabela->qtd++;
             return 1;
         }
+        if (strcmp(tabela->clientes[novaPosicao]->cpf, cliente->cpf) == 0) {
+            printf("Esse cpf ja esta sendo utilizado");
+            return 0;
+        }
+
     }
     return 0;
 }
@@ -81,6 +86,7 @@ int duplaInsercaoCliente (int posicao1, long int chave, int i, int tamanhoTabela
     int posicao2 = chaveDivisao(chave, tamanhoTabela - 1) + 1;
     return ((posicao1 + i*posicao2) & 0x7FFFFFFF) % tamanhoTabela;
 }
+
 
 int buscaCliente(struct Tabela *tabela, const char *cpf, Cliente *cliente, int tipo) {
 
