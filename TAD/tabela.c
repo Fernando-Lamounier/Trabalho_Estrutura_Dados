@@ -131,7 +131,7 @@ void listarCliente(TabelaCliente *tabela, const char *cpf) {
     Cliente *cliente;
     cliente = malloc(sizeof(Cliente));
 
-    if (buscaCliente(tabela, cpf, cliente, 1)) {
+    if (buscaCliente(tabela, cpf, cliente, NULL, 1)) {
         printf("CPF: %s | Nome: %s | Telefone: %s | Endereço: %s\n",
                    cliente->cpf, cliente->nome, cliente->telefone, cliente->endereco);
         free(cliente);
@@ -149,7 +149,7 @@ void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, i
         return;
     }
 
-    if (buscaCliente(tabela, cpf, cliente, 1)) {
+    if (buscaCliente(tabela, cpf, cliente, NULL, 1)) {
         if (opcao != 4) {
             printf("Cliente encontrado para o CPF %s.\n", cpf);
 
@@ -162,12 +162,12 @@ void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, i
             printf("Novo telefone: ");
             scanf("%s", cliente->telefone);
 
-            buscaCliente(tabela, cpf, cliente, 2);
+            buscaCliente(tabela, cpf, cliente, NULL, 2);
         } else {
             // Adiciona o histórico diretamente
             pushAtendimento(&cliente->historico, dado);
             // Atualiza o cliente na tabela
-            buscaCliente(tabela, cpf, cliente, 2);
+            buscaCliente(tabela, cpf, cliente, NULL, 2);
         }
         free(cliente);
         return;
@@ -177,9 +177,9 @@ void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, i
     free(cliente);
 }
 
-void removerCliente(TabelaCliente *tabela, const char *cpf_cnpj) {
+void removerCliente(TabelaCliente *tabela, Agendamento *lista, const char *cpf_cnpj) {
 
-    if (buscaCliente(tabela, cpf_cnpj, NULL, 3)) {
+    if (buscaCliente(tabela, cpf_cnpj, NULL, lista, 3)) {
         printf("Cliente removido com sucesso!!");
     }
 

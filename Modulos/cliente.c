@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void menuClientes(struct Tabela *tabela) {
+void menuClientes(struct Tabela *tabela, Agendamento *lista) {
     int opcao;
     do {
         printf("\n----------MENU DE CLIENTES----------\n"
@@ -61,7 +61,7 @@ void menuClientes(struct Tabela *tabela) {
                 }
                 break;
             case 3:
-                deletarCliente(tabela);
+                deletarCliente(tabela, lista);
                 break;
             case 4:
                 alterarCliente(tabela);
@@ -115,14 +115,14 @@ void pegarDadosCliente (struct Tabela *tabela) {
     free(novo);
 }
 
-void deletarCliente(TabelaCliente *tabela) {
+void deletarCliente(TabelaCliente *tabela, Agendamento *lista) {
 
     char cpf[12];
     printf("Digite o CPF do Cliente: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", cpf);
 
-    removerCliente(tabela, cpf);
+    removerCliente(tabela, lista, cpf);
 
 }
 

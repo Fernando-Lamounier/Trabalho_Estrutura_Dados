@@ -37,7 +37,7 @@ int main() {
 
         switch (opcao) {
             case 1:
-                menuClientes(clientes);
+                menuClientes(clientes, agendamentos);
                 break;
 
             case 2:

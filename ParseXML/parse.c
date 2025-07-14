@@ -3,8 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include "tabela.h"
+#include "time.h"
 
 void parseClientes(xmlNode *node, TabelaCliente *tabela) {
+    time_t
+
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "cliente") == 0) {
             Cliente *novo = malloc(sizeof(Cliente));
