@@ -5,6 +5,7 @@
 #include "Modulos/agendamento.h"
 #include "Modulos/cliente.h"
 #include "Modulos/servico.h"
+#include "Modulos/atendimento.h"
 #include "TAD/tabela.h"
 #include "TAD/AVLtree.h"
 #include "TAD/fila.h"
@@ -44,7 +45,7 @@ int main() {
                 break;
 
             case 3:
-                // Implementar fila de atendimento
+                menuAtendimento(tabelaCliente, fila);
                 break;
 
             case 4:

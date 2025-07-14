@@ -1,4 +1,5 @@
 #include "fila.h"
+#include "tabela.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +23,27 @@ void inserirAtendimento(filaAtendimento **fila, const char *cpf) {
     else {
         printf("Erro ao alocar memoria\n");
     }
+}
 
+filaAtendimento *removerAtendimento(filaAtendimento **fila) {
+    filaAtendimento *remover = NULL;
 
+    if (*fila) {
+        remover = *fila;
+        *fila = remover->prox;
+    }
+    else {
+        printf("Fila vazia\n");
+    }
+    return remover;
+}
+
+void imprimirFila(filaAtendimento *fila, struct Tabela *tabela) {
+    Cliente *cliente = malloc(sizeof(Cliente));
+    printf("--------FILA--------\n");
+    while (fila) {
+        buscaCliente(tabela, fila->cpf, cliente, 1);
+        printf("CPF: %s | Nome: %s | Telefone: %s | Endereço: %s\n\n",
+                   cliente->cpf_cnpj, cliente->nome, cliente->telefone, cliente->endereco);
+    }
 }
