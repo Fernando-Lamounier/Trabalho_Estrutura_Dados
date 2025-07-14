@@ -6,7 +6,6 @@
 #include "time.h"
 
 void parseClientes(xmlNode *node, TabelaCliente *tabela) {
-    time_t
 
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "cliente") == 0) {
