@@ -1,4 +1,5 @@
 #include "tabela.h"
+#include "lista.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,7 +89,7 @@ int duplaInsercaoCliente (int posicao1, long int chave, int i, int tamanhoTabela
 }
 
 
-int buscaCliente(struct Tabela *tabela, const char *cpf, Cliente *cliente, int tipo) {
+int buscaCliente(struct Tabela *tabela, const char *cpf, Cliente *cliente, Agendamento *lista, int tipo) {
 
     long int chave = valorChaveCPF(cpf);
     int novaPosicao;
@@ -109,6 +110,13 @@ int buscaCliente(struct Tabela *tabela, const char *cpf, Cliente *cliente, int t
                     *(tabela->clientes[novaPosicao]) = *cliente;
                     return 1;
                 case 3:
+                    while (lista != NULL) {
+                        if (strcmp(lista->cpf, tabela->clientes[novaPosicao]->cpf) == 0) {
+                            printf("Cliente com agendamento pendente!\n\n");
+                            return 0;
+                        }
+                        lista = lista->prox;
+                    }
                     tabela->clientes[novaPosicao] = NULL;
                     return 1;
                 default:
