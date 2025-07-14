@@ -8,9 +8,6 @@
 #include "../TAD/lista.h"
 #include "../TAD/AVLtree.h"
 #include <string.h>
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-#include <libxml/xmlversion.h>
 
 void parseXML(const char *filename, Agendamento **agendamento, NoAVL **raiz);
 

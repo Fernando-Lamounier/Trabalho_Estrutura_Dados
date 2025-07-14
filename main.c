@@ -7,15 +7,17 @@
 #include "Modulos/servico.h"
 #include "TAD/tabela.h"
 #include "TAD/AVLtree.h"
+#include "TAD/fila.h"
 
 int main() {
 
-    TabelaCliente *cliente = criarTabelaCliente(1024);
+    TabelaCliente *tabelaCliente = criarTabelaCliente(1024);
     Agendamento *agendamento = criarLista(); // lista encadeada inicialmente vazia
     NoAVL *raiz = criarArvore();
+    filaAtendimento *fila = NULL;
 
     // Le um arquivo XML
-    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", &agendamento, &raiz);
+    //parseXML("..\\..\\Trabalho_Estrutura_Dados\\teste.txt", &agendamento, &raiz);
 
     printf("------------TRABALHO Estrutura de Dados I------------\n"
            "Tema: Oficina\n\n");
@@ -34,7 +36,7 @@ int main() {
 
         switch (opcao) {
             case 1:
-                menuClientes(cliente);
+                menuClientes(tabelaCliente);
                 break;
 
             case 2:
@@ -56,7 +58,7 @@ int main() {
             case 6:
                 printf("Saindo!\n");
                 liberarLista(agendamento);
-                liberarTabelaCliente(cliente);
+                liberarTabelaCliente(tabelaCliente);
                 liberarArvore(raiz);
                 break;
             default:
