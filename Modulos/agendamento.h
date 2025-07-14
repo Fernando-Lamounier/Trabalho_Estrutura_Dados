@@ -1,18 +1,17 @@
-//
-// Created by Usuario on 06/07/2025.
-//
 
 #ifndef TRABALHO_ESTRUTURA_DADOS_MENU_H
 #define TRABALHO_ESTRUTURA_DADOS_MENU_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../TAD/AVLtree.h"
-#include "../TAD/lista.h"
-#include "../TAD/tabela.h"
+
+#include <stdbool.h>
+#include "lista.h"
+#include "pilha.h"
+#include "AVLtree.h"
 
 
-void menuAgendamento (Agendamento *agendamentos, NoAVL *raiz);
+bool validarCPF(const char *cpf);
+bool validarData(const char *data);
+bool validarHora(const char *hora);
+void menuAgendamento (struct Tabela *tabela, Agendamento *agendamentos, NoAVL *raiz);
 
 #endif //TRABALHO_ESTRUTURA_DADOS_MENU_H

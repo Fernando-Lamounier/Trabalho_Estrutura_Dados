@@ -1,9 +1,7 @@
 #ifndef TRABALHO_ESTRUTURA_DADOS_AVLTREE_H
 #define TRABALHO_ESTRUTURA_DADOS_AVLTREE_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 typedef struct Servico {
     char nome[50];

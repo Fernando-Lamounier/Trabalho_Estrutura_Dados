@@ -1,14 +1,6 @@
-//
-// Created by Usuario on 06/07/2025.
-//
-
 #ifndef TRABALHO_ESTRUTURA_DADOS_LISTA_H
 #define TRABALHO_ESTRUTURA_DADOS_LISTA_H
 
-#include "../TAD/tabela.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 
 typedef struct Agendamento {

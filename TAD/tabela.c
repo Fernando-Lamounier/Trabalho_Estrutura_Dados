@@ -1,5 +1,4 @@
 #include "tabela.h"
-
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,13 +39,13 @@ int chaveMultiplicacao (long int chave, int tamanhoTabela) {
     return (int)(tamanhoTabela*valorChave);
 }
 
-long int valorChaveCPF(const char *cpf_cnpj) {
+long int valorChaveCPF(const char *cpf) {
     int i;
     long int valor = 0;
-    int tamanho = strlen(cpf_cnpj);
+    int tamanho = strlen(cpf);
 
     for(i = 0; i < tamanho; i++) {
-        valor = 7 * valor + (int)cpf_cnpj[i];
+        valor = 7 * valor + (int)cpf[i];
     }
     return valor;
 }
@@ -56,7 +55,7 @@ int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
     if (tabela->qtd == tabela->tamanhoTabela || tabela == NULL) {
         return 0;
     }
-    long int chave = valorChaveCPF(cliente->cpf_cnpj);
+    long int chave = valorChaveCPF(cliente->cpf);
     int novaPosicao;
     int posicao = chaveDivisao(chave, tabela->tamanhoTabela);
 
@@ -67,6 +66,7 @@ int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
             Cliente *copia = malloc(sizeof(Cliente));
             if (copia == NULL) return 0;
             *copia = *cliente;
+            inicializarPilha((HistoricoAtendimento *) &copia->historico);
 
             tabela->clientes[novaPosicao] = copia;
 
@@ -82,9 +82,9 @@ int duplaInsercaoCliente (int posicao1, long int chave, int i, int tamanhoTabela
     return ((posicao1 + i*posicao2) & 0x7FFFFFFF) % tamanhoTabela;
 }
 
-int buscaCliente(TabelaCliente *tabela, const char *cpf_cnpj, Cliente *cliente, int tipo) {
+int buscaCliente(struct Tabela *tabela, const char *cpf, Cliente *cliente, int tipo) {
 
-    long int chave = valorChaveCPF(cpf_cnpj);
+    long int chave = valorChaveCPF(cpf);
     int novaPosicao;
 
     int posicao = chaveDivisao(chave, tabela->tamanhoTabela);
@@ -94,7 +94,7 @@ int buscaCliente(TabelaCliente *tabela, const char *cpf_cnpj, Cliente *cliente, 
         if (tabela->clientes[novaPosicao] == NULL) {
             break;
         }
-        if (strcmp(tabela->clientes[novaPosicao]->cpf_cnpj, cpf_cnpj) == 0) {
+        if (strcmp(tabela->clientes[novaPosicao]->cpf, cpf) == 0) {
             switch (tipo){
                 case 1:
                     *cliente = *(tabela->clientes[novaPosicao]);
@@ -113,41 +113,54 @@ int buscaCliente(TabelaCliente *tabela, const char *cpf_cnpj, Cliente *cliente, 
     return 0;
 }
 
-void listarCliente(TabelaCliente *tabela, const char *cpf_cnpj) {
+void listarCliente(TabelaCliente *tabela, const char *cpf) {
     Cliente *cliente;
     cliente = malloc(sizeof(Cliente));
 
-    if (buscaCliente(tabela, cpf_cnpj, cliente, 1)) {
+    if (buscaCliente(tabela, cpf, cliente, 1)) {
         printf("CPF: %s | Nome: %s | Telefone: %s | Endereço: %s\n",
-                   cliente->cpf_cnpj, cliente->nome, cliente->telefone, cliente->endereco);
+                   cliente->cpf, cliente->nome, cliente->telefone, cliente->endereco);
         free(cliente);
         return;
     }
 
-    printf("Nenhum cliente encontrado para o CPF %s.\n", cpf_cnpj);
+    printf("Nenhum cliente encontrado para o CPF %s.\n", cpf);
 
 }
 
-void atualizarCliente(TabelaCliente *tabela, const char *cpf_cnpj) {
-    Cliente *cliente;
-    cliente = (struct Cliente*)malloc(sizeof(struct Cliente));
-
-    if (buscaCliente(tabela, cpf_cnpj, cliente, 1)) {
-        printf("Cliente encontrado para o CPF %s.\n", cpf_cnpj);
-
-        printf("Novo nome do cliente: ");
-        scanf("%s", cliente->nome);
-
-        printf("Novo endereço do cliente: ");
-        scanf("%s", cliente->endereco);
-
-        printf("Novo telefone: ");
-        scanf("%s", cliente->telefone);
-
-        buscaCliente(tabela, cpf_cnpj, cliente, 2);
+void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, int opcao) {
+    Cliente *cliente = malloc(sizeof(Cliente));
+    if (!cliente) {
+        fprintf(stderr, "Erro de alocação\n");
+        return;
     }
 
-    printf("Nenhum cliente encontrado para o CPF %s.\n", cpf_cnpj);
+    if (buscaCliente(tabela, cpf, cliente, 1)) {
+        if (opcao != 4) {
+            printf("Cliente encontrado para o CPF %s.\n", cpf);
+
+            printf("Novo nome do cliente: ");
+            scanf("%s", cliente->nome);
+
+            printf("Novo endereço do cliente: ");
+            scanf("%s", cliente->endereco);
+
+            printf("Novo telefone: ");
+            scanf("%s", cliente->telefone);
+
+            buscaCliente(tabela, cpf, cliente, 2);
+        } else {
+            // Adiciona o histórico diretamente
+            pushAtendimento(&cliente->historico, dado);
+            // Atualiza o cliente na tabela
+            buscaCliente(tabela, cpf, cliente, 2);
+        }
+        free(cliente);
+        return;
+    }
+
+    printf("Nenhum cliente encontrado para o CPF %s.\n", cpf);
+    free(cliente);
 }
 
 void removerCliente(TabelaCliente *tabela, const char *cpf_cnpj) {

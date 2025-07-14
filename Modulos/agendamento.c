@@ -1,7 +1,12 @@
 #include "agendamento.h"
+#include "tabela.h"
 #include <regex.h>
-#include <stdbool.h>
 #include <ctype.h>
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 
 // Retorna true se o CPF tiver 11 dígitos e apenas números
 bool validarCPF(const char *cpf) {
@@ -47,9 +52,24 @@ void buscaCPF (Agendamento *agendamentos) {
 
 }
 
+Agendamento* buscarAgendamento(Agendamento *agendamentos, const char *cpf, const char *data, const char *hora) {
+    Agendamento *atual = agendamentos;
+    while (atual) {
+        if (strcmp(atual->cpf, cpf) == 0 &&
+            strcmp(atual->data, data) == 0 &&
+            strcmp(atual->hora, hora) == 0) {
+            return atual;
+        }
+        atual = atual->prox;
+    }
+    return NULL;
+}
+
+
 // Pega todos os dados para agendar um serviço
-void pegarDados (Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
+void pegarDados (struct Tabela *tabela, Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
     Agendamento *novo = malloc(sizeof(Agendamento));
+    Historico *novo2 = malloc(sizeof(Historico));
     if (!novo) {
         fprintf(stderr, "Erro de alocação\n");
         return;
@@ -65,6 +85,7 @@ void pegarDados (Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
         free(novo);
         return;
     }
+
 
     while (getchar() != '\n');
     printf("Digite a Data (DD/MM/AAAA): ");
@@ -93,7 +114,47 @@ void pegarDados (Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
         free(novo);
         return;
     } else if (opcao == 4) {
+        while (getchar() != '\n');
+        printf("Digite uma observação para o serviço:\n");
+        fgets(novo2->observacoes, sizeof(novo2->observacoes), stdin);
+        novo2->observacoes[strcspn(novo2->observacoes, "\n")] = '\0';
+
+        time_t agora = time(NULL);
+        if (agora == ((time_t) -1)) {
+            printf("Erro ao obter o tempo atual\n");
+            free(novo);
+            free(novo2);
+            return;
+        }
+
+        struct tm *dataHoraLocal = localtime(&agora);
+        if (dataHoraLocal == NULL) {
+            printf("Erro ao converter para hora local\n");
+            free(novo);
+            free(novo2);
+            return;
+        }
+
+        char data[11];
+        char hora[6];
+        strftime(data, sizeof(data), "%d/%m/%Y", dataHoraLocal);
+        strftime(hora, sizeof(hora), "%H:%M", dataHoraLocal);
+
+        Agendamento *ag = buscarAgendamento(*agendamentos, novo->cpf, novo->data, novo->hora);
+        if (ag == NULL) {
+            printf("Erro: Agendamento não encontrado.\n");
+            free(novo);
+            free(novo2);
+            return;
+        }
+
+        strcpy(novo2->tipoServico, ag->tipoServico);
+        strcpy(novo2->data, data);
+        strcpy(novo2->hora, hora);
+
         atualizarStatus(*agendamentos, novo->cpf, novo->data, novo->hora, "Concluido");
+        atualizarCliente(tabela, novo->cpf, novo2, 4);
+
         free(novo);
         return;
     }
@@ -122,7 +183,7 @@ void pegarDados (Agendamento **agendamentos, NoAVL *raiz, const int opcao) {
 }
 
 // Menu da seção de Agendamentos (Lista)
-void menuAgendamento (Agendamento *agendamentos, NoAVL *raiz) {
+void menuAgendamento (struct Tabela *tabela, Agendamento *agendamentos, NoAVL *raiz) {
     int opcao;
     do {
         printf("\n----------MENU DE AGENDAMENTOS----------\n"
@@ -138,14 +199,14 @@ void menuAgendamento (Agendamento *agendamentos, NoAVL *raiz) {
 
         switch (opcao) {
             case 1:
-                pegarDados(&agendamentos, raiz, opcao);
+                pegarDados(tabela, &agendamentos, raiz, opcao);
                 break;
             case 2:
                 buscaCPF(agendamentos);
                 break;
             case 3:
             case 4:
-                pegarDados(&agendamentos, raiz, opcao);
+                pegarDados(tabela, &agendamentos, raiz, opcao);
                 break;
             case 5:
                 printf("Voltando...\n\n");
