@@ -8,19 +8,20 @@
 void inserirAtendimento(filaAtendimento **fila, const char *cpf) {
     filaAtendimento *novo = malloc(sizeof(filaAtendimento));
     if (novo) {
-        strcpy(novo->cpf, cpf);
+        strncpy(novo->cpf, cpf, sizeof(novo->cpf) - 1);
+        novo->cpf[sizeof(novo->cpf) - 1] = '\0'; // Garante terminação nula
         novo->prox = NULL;
-        if ((*fila) == NULL) {
-            (*fila) = novo;
-        }else {
-            novo = *fila;
-            while (novo->prox) {
-                novo = novo->prox;
+
+        if (*fila == NULL) {
+            *fila = novo;
+        } else {
+            filaAtendimento *atual = *fila;
+            while (atual->prox != NULL) {
+                atual = atual->prox;
             }
-            novo->prox = novo;
+            atual->prox = novo;
         }
-    }
-    else {
+    } else {
         printf("Erro ao alocar memoria\n");
     }
 }
@@ -44,6 +45,7 @@ void imprimirFila(filaAtendimento *fila, struct Tabela *tabela) {
     while (fila) {
         buscaCliente(tabela, fila->cpf, cliente, 1);
         printf("CPF: %s | Nome: %s | Telefone: %s | Endereço: %s\n\n",
-                   cliente->cpf_cnpj, cliente->nome, cliente->telefone, cliente->endereco);
+                   cliente->cpf, cliente->nome, cliente->telefone, cliente->endereco);
+        fila = fila->prox;
     }
 }

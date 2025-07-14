@@ -13,16 +13,16 @@
 
 int main() {
 
-    TabelaCliente *clientes = criarTabelaCliente(1024);
+    TabelaCliente *clientes = criarTabelaCliente(1000003);
     Agendamento *agendamentos = criarLista();
     NoAVL *raiz = criarArvore();
     filaAtendimento *fila = NULL;
 
     // Le um arquivo XML
-    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", clientes, &agendamentos, &raiz);
+    parseXML("C:\\Users\\Usuario\\OneDrive\\Área de Trabalho\\Trabalho_Estrutura_Dados\\teste.txt", clientes, &agendamentos, &raiz, &fila);
 
     printf("------------TRABALHO Estrutura de Dados I------------\n"
-           "Tema: Oficina\n\n");
+           "Tema: Sistema de Atendimento\n\n");
 
     int opcao = 0;
     do {
@@ -57,6 +57,9 @@ int main() {
                 liberarLista(agendamentos);
                 liberarTabelaCliente(clientes);
                 liberarArvore(raiz);
+                while(fila) {
+                    removerAtendimento(&fila);
+            }
                 break;
             default:
                 printf("Opção Inválida!\n");

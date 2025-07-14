@@ -9,7 +9,8 @@
 #include "lista.h"
 #include "AVLtree.h"
 #include "tabela.h"
+#include "fila.h"
 
-void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendamento, NoAVL **raiz);
+void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendamento, NoAVL **raiz, filaAtendimento **fila);
 
 #endif //TRABALHO_ESTRUTURA_DADOS_PARSE_H
