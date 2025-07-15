@@ -86,6 +86,8 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
 }
 
 void parseFilaAtendimento(xmlNode *node, filaAtendimento **fila) {
+
+    clock_t inicio = clock();
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "cliente_fila") == 0) {
             for (xmlNode *child = cur->children; child; child = child->next) {
@@ -98,6 +100,9 @@ void parseFilaAtendimento(xmlNode *node, filaAtendimento **fila) {
             }
         }
     }
+    clock_t fim = clock();
+    double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo da leitura de clientes: %f\n", tempo);
 }
 
 void parseHistoricoAtendimentos(xmlNode *node, TabelaCliente *tabela) {
