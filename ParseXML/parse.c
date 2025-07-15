@@ -1,5 +1,7 @@
 #include <libxml/tree.h>
 #include "parse.h"
+
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "tabela.h"
@@ -7,6 +9,7 @@
 
 void parseClientes(xmlNode *node, TabelaCliente *tabela) {
 
+    clock_t inicio = clock();
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "cliente") == 0) {
             Cliente *novo = malloc(sizeof(Cliente));
@@ -35,9 +38,15 @@ void parseClientes(xmlNode *node, TabelaCliente *tabela) {
             free(novo);
         }
     }
+    clock_t fim = clock();
+    double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo da leitura de clientes: %f\n", tempo);
 }
 
 void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
+
+    clock_t inicio = clock();
+
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "agendamento") == 0) {
             Agendamento *novo = malloc(sizeof(Agendamento));
@@ -69,9 +78,16 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
             free(novo);
         }
     }
+
+    clock_t fim = clock();
+    double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo da leitura de agendamentos: %f\n", tempo);
 }
 
 void parseHistoricoAtendimentos(xmlNode *node, TabelaCliente *tabela) {
+
+    clock_t inicio = clock();
+
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "atendimento") == 0) {
             Historico *novo = malloc(sizeof(Historico));
@@ -104,9 +120,16 @@ void parseHistoricoAtendimentos(xmlNode *node, TabelaCliente *tabela) {
             free(novo);
         }
     }
+
+    clock_t fim = clock();
+    double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo da leitura de historicos de atendimentos: %f\n", tempo);
 }
 
 void parseServicos(xmlNode *node, NoAVL **raiz) {
+
+    clock_t inicio = clock();
+
     for (xmlNode *cur = node; cur; cur = cur->next) {
         if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "servico") == 0) {
             Servico *novo = malloc(sizeof(Servico));
@@ -133,6 +156,10 @@ void parseServicos(xmlNode *node, NoAVL **raiz) {
             free(novo);
         }
     }
+
+    clock_t fim = clock();
+    double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo da leitura de serviços: %f\n", tempo);
 }
 
 void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendamento, NoAVL **raiz) {
