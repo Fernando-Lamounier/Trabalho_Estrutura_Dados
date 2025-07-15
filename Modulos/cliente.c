@@ -112,7 +112,9 @@ void pegarDadosCliente (struct Tabela *tabela) {
 
     clock_t inicio = clock();
 
-    insereCliente(tabela, novo);
+    if (insereCliente(tabela, novo)) {
+        printf("Cliente inserido com sucesso");
+    }
 
     clock_t final = clock();
     double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;

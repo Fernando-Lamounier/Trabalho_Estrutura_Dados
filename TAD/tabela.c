@@ -72,7 +72,6 @@ int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
 
             tabela->clientes[novaPosicao] = copia;
             tabela->qtd++;
-            printf("Cliente %s inserido com sucesso", tabela->clientes[novaPosicao]->cpf);
 
 
             return 1;
