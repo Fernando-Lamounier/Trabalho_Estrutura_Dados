@@ -174,11 +174,7 @@ void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, i
             buscaCliente(tabela, cpf, cliente, NULL, 2);
         } else {
             // Adiciona o histórico diretamente
-            clock_t inicio = clock();
             pushAtendimento(&cliente->historico, dado);
-            clock_t final = clock();
-            double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
-            printf("\nTempo para push: %f\n",tempo);
             // Atualiza o cliente na tabela
             buscaCliente(tabela, cpf, cliente, NULL, 2);
         }
