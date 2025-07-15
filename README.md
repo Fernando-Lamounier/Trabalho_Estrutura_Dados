@@ -1,1 +1,1 @@
-# Trabalho_Estrutura_Dados
+É necessario instalar a biblioteca Libxml2 em um pacote do cygwin.
