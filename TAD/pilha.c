@@ -48,7 +48,7 @@ void visualizarHistorico(struct Tabela *tabela) {
         return;
     }
 
-    if (buscaCliente(tabela, cpf, busca, 1)) {
+    if (buscaCliente(tabela, cpf, busca, NULL, 1)) {
         if (busca->historico.topo == NULL) {
             printf("Sem atendimentos concluídos.\n");
             free(busca);
