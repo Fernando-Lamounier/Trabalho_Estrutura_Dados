@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 NoAVL* criarArvore() {
     return NULL;
@@ -21,6 +22,7 @@ int fatorBalanceamento(NoAVL* no) {
 }
 
 NoAVL* rotacaoDireita(NoAVL* y) {
+
     NoAVL* x = y->esquerda;
     NoAVL* T2 = x->direita;
 
@@ -59,6 +61,7 @@ NoAVL* criarNo(Servico servico) {
 }
 
 int inserirServico(NoAVL **raiz, Servico servico) {
+    clock_t inicio = clock();
     if (*raiz == NULL) {
         *raiz = criarNo(servico);
         return 1; // Inserção OK
@@ -98,6 +101,10 @@ int inserirServico(NoAVL **raiz, Servico servico) {
         (*raiz)->direita = rotacaoDireita((*raiz)->direita);
         *raiz = rotacaoEsquerda(*raiz);
     }
+
+    clock_t final = clock();
+    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+    printf("\nTempo para inserção: %f\n",tempo);
 
     return 1; // Inserção OK
 }

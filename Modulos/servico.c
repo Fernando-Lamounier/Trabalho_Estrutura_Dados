@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 void pegarDadosServico (NoAVL **raiz) {
     Servico *novo = malloc(sizeof(Servico));
@@ -36,8 +37,11 @@ void pegarNome (NoAVL *raiz) {
     fgets(nome, sizeof(nome), stdin);
     nome[strcspn(nome, "\n")] = '\0';
 
+    clock_t inicio = clock();
     buscarServico(raiz, nome, 2);
-
+    clock_t final = clock();
+    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+    printf("\nTempo para busca: %f\n",tempo);
 }
 
 void menuServico (NoAVL *raiz) {

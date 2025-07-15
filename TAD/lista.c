@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 int verificarConflito(Agendamento *lista, const char *data, const char *hora) {
     while (lista != NULL) {
@@ -42,6 +43,7 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
         while (temp->prox != NULL)
             temp = temp->prox;
         temp->prox = novo;
+
         return lista;
     }
 }
@@ -49,6 +51,7 @@ Agendamento* agendar(Agendamento *lista, const char *cpf, const char *data, cons
 void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
     int encontrou = 0;
 
+    clock_t inicio = clock();
     printf("Resultado da busca:\n");
     while (lista != NULL) {
         if (strcmp(lista->cpf, cpf) == 0) {
@@ -57,6 +60,9 @@ void visualizarAgendamentos(Agendamento *lista, const char *cpf) {
             encontrou = 1;
         }
         lista = lista->prox;
+        clock_t final = clock();
+        double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+        printf("\nTempo para visualização: %f\n",tempo);
     }
 
     if (!encontrou) {

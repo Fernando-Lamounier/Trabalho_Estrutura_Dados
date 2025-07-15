@@ -173,8 +173,14 @@ void pegarDados (struct Tabela *tabela, Agendamento **agendamentos, NoAVL *raiz,
 
     int verif = verificarConflito(*agendamentos, novo->data, novo->hora);
     if (verif == 0) {
+        clock_t inicio = clock();
+
         *agendamentos = agendar(*agendamentos, novo->cpf, novo->data, novo->hora, novo->tipoServico, novo->status);
+
         printf("Serviço agendado com sucesso!\n");
+        clock_t final = clock();
+        double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+        printf("\nTempo para agendar: %f\n",tempo);
     } else {
         printf("Erro: Já existe um agendamento para a data %s às %s.\n", novo->data, novo->hora);
     }

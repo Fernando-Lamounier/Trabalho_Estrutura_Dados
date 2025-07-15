@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 
 
@@ -52,7 +53,8 @@ long int valorChaveCPF(const char *cpf) {
 }
 
 int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
-    
+
+    clock_t inicio = clock();
     if (tabela->qtd == tabela->tamanhoTabela || tabela == NULL) {
         return 0;
     }
@@ -70,8 +72,13 @@ int insereCliente (TabelaCliente *tabela, Cliente *cliente) {
             inicializarPilha((HistoricoAtendimento *) &copia->historico);
 
             tabela->clientes[novaPosicao] = copia;
-
             tabela->qtd++;
+            printf("Cliente %s inserido com sucesso", tabela->clientes[novaPosicao]->cpf);
+
+            clock_t final = clock();
+            double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+            printf("\nTempo para inserção: %f\n",tempo);
+
             return 1;
         }
         if (strcmp(tabela->clientes[novaPosicao]->cpf, cliente->cpf) == 0) {
@@ -131,10 +138,16 @@ void listarCliente(TabelaCliente *tabela, const char *cpf) {
     Cliente *cliente;
     cliente = malloc(sizeof(Cliente));
 
+    clock_t inicio = clock();
     if (buscaCliente(tabela, cpf, cliente, NULL, 1)) {
         printf("CPF: %s | Nome: %s | Telefone: %s | Endereço: %s\n",
                    cliente->cpf, cliente->nome, cliente->telefone, cliente->endereco);
         free(cliente);
+
+        clock_t final = clock();
+        double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+        printf("\nTempo para busca: %f\n",tempo);
+
         return;
     }
 
@@ -179,8 +192,13 @@ void atualizarCliente(struct Tabela *tabela, const char *cpf, Historico *dado, i
 
 void removerCliente(TabelaCliente *tabela, Agendamento *lista, const char *cpf_cnpj) {
 
+    clock_t inicio = clock();
     if (buscaCliente(tabela, cpf_cnpj, NULL, lista, 3)) {
         printf("Cliente removido com sucesso!!");
+
+        clock_t final = clock();
+        double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+        printf("\nTempo para remoção: %f\n",tempo);
     }
 
 }
