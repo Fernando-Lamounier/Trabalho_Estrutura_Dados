@@ -113,7 +113,7 @@ void pegarDadosCliente (struct Tabela *tabela) {
     clock_t inicio = clock();
 
     if (insereCliente(tabela, novo)) {
-        printf("Cliente inserido com sucesso");
+        printf("Cliente inserido com sucesso\n\n");
     }
 
     clock_t final = clock();
