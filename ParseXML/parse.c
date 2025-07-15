@@ -7,6 +7,7 @@
 #include "tabela.h"
 #include "time.h"
 
+
 void parseClientes(xmlNode *node, TabelaCliente *tabela) {
 
     clock_t inicio = clock();
@@ -82,6 +83,21 @@ void parseAgendamentos(xmlNode *node, Agendamento **agendamentos) {
     clock_t fim = clock();
     double tempo = (double) (fim - inicio) / CLOCKS_PER_SEC;
     printf("Tempo da leitura de agendamentos: %f\n", tempo);
+}
+
+void parseFilaAtendimento(xmlNode *node, filaAtendimento **fila) {
+    for (xmlNode *cur = node; cur; cur = cur->next) {
+        if (cur->type == XML_ELEMENT_NODE && strcmp((char *)cur->name, "cliente_fila") == 0) {
+            for (xmlNode *child = cur->children; child; child = child->next) {
+                if (child->type == XML_ELEMENT_NODE && strcmp((char *)child->name, "cpf") == 0) {
+                    char *cpf = (char *)xmlNodeGetContent(child);
+                    inserirAtendimento(fila, cpf);
+                    xmlFree(cpf);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void parseHistoricoAtendimentos(xmlNode *node, TabelaCliente *tabela) {
@@ -162,7 +178,7 @@ void parseServicos(xmlNode *node, NoAVL **raiz) {
     printf("Tempo da leitura de serviços: %f\n", tempo);
 }
 
-void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendamento, NoAVL **raiz) {
+void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendamento, NoAVL **raiz, filaAtendimento **fila) {
     xmlDoc *doc = xmlReadFile(filename, NULL, 0);
     if (!doc) {
         printf("Erro ao abrir o arquivo %s\n", filename);
@@ -177,6 +193,8 @@ void parseXML(const char *filename, TabelaCliente *tabela, Agendamento **agendam
                 parseClientes(cur->children, tabela);
             } else if (strcmp((char *)cur->name, "agendamentos") == 0) {
                 parseAgendamentos(cur->children, agendamento);
+            } else if (strcmp((char *)cur->name, "fila_atendimento") == 0) {
+                parseFilaAtendimento(cur->children, fila);
             } else if (strcmp((char *)cur->name, "historico_atendimentos") == 0) {
                 parseHistoricoAtendimentos(cur->children, tabela);
             } else if (strcmp((char *)cur->name, "servicos") == 0) {
