@@ -13,7 +13,6 @@ void inicializarPilha(HistoricoAtendimento *pilha) {
 
 void pushAtendimento(HistoricoAtendimento *pilha, Historico *dado) {
 
-    clock_t inicio = clock();
     NoPilha *novo = malloc(sizeof(NoPilha));
     if (!novo) {
         fprintf(stderr, "Erro ao alocar memória para nó da pilha.\n");
@@ -30,9 +29,6 @@ void pushAtendimento(HistoricoAtendimento *pilha, Historico *dado) {
     novo->prox = pilha->topo;
     pilha->topo = novo;
 
-    clock_t final = clock();
-    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
-    printf("\nTempo para push: %f\n",tempo);
 }
 
 

@@ -61,7 +61,6 @@ NoAVL* criarNo(Servico servico) {
 }
 
 int inserirServico(NoAVL **raiz, Servico servico) {
-    clock_t inicio = clock();
     if (*raiz == NULL) {
         *raiz = criarNo(servico);
         return 1; // Inserção OK
@@ -101,10 +100,6 @@ int inserirServico(NoAVL **raiz, Servico servico) {
         (*raiz)->direita = rotacaoDireita((*raiz)->direita);
         *raiz = rotacaoEsquerda(*raiz);
     }
-
-    clock_t final = clock();
-    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
-    printf("\nTempo para inserção: %f\n",tempo);
 
     return 1; // Inserção OK
 }

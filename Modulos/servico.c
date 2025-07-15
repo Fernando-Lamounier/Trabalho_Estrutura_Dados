@@ -23,8 +23,14 @@ void pegarDadosServico (NoAVL **raiz) {
     scanf("%f", &novo->precoMedio);
     while (getchar()!= '\n');
 
-    if (inserirServico(raiz, *novo))
+    clock_t inicio = clock();
+    if (inserirServico(raiz, *novo)) {
         printf("Serviço inserido com sucesso!\n");
+
+        clock_t final = clock();
+        double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+        printf("\nTempo para inserção: %f\n",tempo);
+    }
     else
         printf("Erro: Serviço com esse nome já existe!\n");
 

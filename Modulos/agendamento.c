@@ -47,8 +47,11 @@ void buscaCPF (Agendamento *agendamentos) {
     fgets(busca, sizeof(busca), stdin);
     busca[strcspn(busca, "\n")] = '\0';
 
+    clock_t inicio = clock();
     visualizarAgendamentos(agendamentos, busca);
-
+    clock_t final = clock();
+    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+    printf("\nTempo para visualizar: %f\n",tempo);
 
 }
 

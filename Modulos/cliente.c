@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void menuClientes(struct Tabela *tabela, Agendamento *lista) {
     int opcao;
@@ -109,8 +110,13 @@ void pegarDadosCliente (struct Tabela *tabela) {
     scanf(" %[^\n]", novo->telefone);
 
 
+    clock_t inicio = clock();
 
     insereCliente(tabela, novo);
+
+    clock_t final = clock();
+    double tempo = (double) (final - inicio)/CLOCKS_PER_SEC;
+    printf("\nTempo para inserção: %f\n",tempo);
 
     free(novo);
 }
